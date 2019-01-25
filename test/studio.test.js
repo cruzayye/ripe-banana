@@ -7,14 +7,14 @@ const app = require('../lib/app');
 
 describe('Studio app', () => {
 
-  const createStudio = (name, address) => {
+  const createStudio = (name) => {
     return request(app)
       .post('/studios')
       .send({
-        name: name,
-        address: address
+        name: name
+        
       })
-      .then(res => console.log(res.body));
+      .then(res => res.body);
   };
   it('validates a good model', () => {
     const studio = new Studio({
@@ -38,9 +38,33 @@ describe('Studio app', () => {
     });
   });
 
-  it('gets list of studios', () => {
+  it.only('creates a new studio', () => {
+    return request(app)
+      .post('/studios')
+      .send({
+        name: 'Universal',
+        address: {
+          city: 'Los Angeles',
+          state: 'CA',
+          county: 'LA County'
+        } 
+      })
+      .then(res => {
+        console.log(res.body);
+        expect(res.body).toEqual({
+          name: 'Universal',
+          address: {
+            city: 'Los Angeles',
+            state: 'CA',
+            county: 'LA County'
+          }, id: expect.any(String)
+        });
+      });
+  });
+
+  it.skip('gets list of studios', () => {
     return Promise.all(['Universal', 'Fox', 'Disney'].map(studio => {
-      createStudio(studio);
+      return createStudio(studio);
     }))
       .then(() => {
         return request(app)
