@@ -1,0 +1,37 @@
+{
+  "name": "ripe-banana",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch --runInBand",
+    "pretest": "npm run lint",
+    "start": "nodemon server.js",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cruzayye/ripe-banana.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cruzayye/ripe-banana/issues"
+  },
+  "homepage": "https://github.com/cruzayye/ripe-banana#readme",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "jest": "^24.0.0",
+    "supertest": "^3.4.2"
+  },
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.9",
+    "superagent": "^4.1.0"
+  }
+  
+}
