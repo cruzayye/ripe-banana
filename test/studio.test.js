@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('../lib/utils/connect')();
 
 const request = require('supertest');
 const Studio = require('../lib/models/Studio');
@@ -7,12 +8,12 @@ const app = require('../lib/app');
 
 describe('Studio app', () => {
 
-  const createStudio = (name) => {
+  const createStudio = (name, address) => {
     return request(app)
       .post('/studios')
       .send({
-        name: name
-        
+        name: name,
+        address: address
       })
       .then(res => res.body);
   };
@@ -57,12 +58,13 @@ describe('Studio app', () => {
             city: 'Los Angeles',
             state: 'CA',
             county: 'LA County'
-          }, id: expect.any(String)
+          }, _id: expect.any(String),
+          __v: 0
         });
       });
   });
 
-  it.skip('gets list of studios', () => {
+  it('gets list of studios', () => {
     return Promise.all(['Universal', 'Fox', 'Disney'].map(studio => {
       return createStudio(studio);
     }))
