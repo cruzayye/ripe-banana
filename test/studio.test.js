@@ -17,6 +17,13 @@ describe('Studio app', () => {
       })
       .then(res => res.body);
   };
+
+  beforeEach(done => {
+    return mongoose.connection.dropDatabase(() => {
+      done();
+    });
+  });
+  
   it('validates a good model', () => {
     const studio = new Studio({
       name: 'Universal',
@@ -39,7 +46,7 @@ describe('Studio app', () => {
     });
   });
 
-  it.only('creates a new studio', () => {
+  it('creates a new studio', () => {
     return request(app)
       .post('/studios')
       .send({
