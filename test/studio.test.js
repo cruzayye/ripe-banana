@@ -83,4 +83,21 @@ describe('Studio app', () => {
         expect(res.body).toHaveLength(3);
       });
   });
+  it.only('gets studio by id', () => {
+    return createStudio('New Studio')
+      .then(createStudio => {
+        return Promise.all([
+          Promise.resolve(createStudio.id),
+          request(app)
+            .get(`/studios/${createStudio._id}`)
+        ])
+          .then(([_id, res]) => {
+            expect(res.body).toEqual({
+              name: 'New Studio',
+              _id: expect.any(String),
+              __v: 0
+            });
+          });
+      });
+  });
 });
