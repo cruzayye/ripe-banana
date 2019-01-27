@@ -100,7 +100,7 @@ describe('Studio app', () => {
           });
       });
   });
-  it.only('finds by Id and patches', ()=> {
+  it('finds by Id and patches', ()=> {
     return createStudio('univershal')
       .then(mispelledStudio => {
         return Promise.all([
@@ -116,6 +116,18 @@ describe('Studio app', () => {
               __v: 0
             });
           });
+      });
+  });
+
+  it.only('finds by ID and deletes', ()=> {
+    return createStudio('Disney Studio')
+      .then(studio2Delete => {
+        return request(app)
+          .delete(`/studios/${studio2Delete._id}`)
+          .send({ deleted: 1 });
+      })
+      .then(res => {
+        expect(res.body).toEqual({ deleted: 1 });
       });
   });
 });
