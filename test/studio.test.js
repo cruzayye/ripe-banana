@@ -100,4 +100,22 @@ describe('Studio app', () => {
           });
       });
   });
+  it.only('finds by Id and patches', ()=> {
+    return createStudio('univershal')
+      .then(mispelledStudio => {
+        return Promise.all([
+          Promise.resolve(createStudio.id),
+          request(app)
+            .patch(`/studios/${mispelledStudio._id}`)
+            .send({ name: 'Universal' })
+        ])
+          .then(([_id, res])=> {
+            expect(res.body).toEqual({
+              name: 'Universal',
+              _id: expect.any(String),
+              __v: 0
+            });
+          });
+      });
+  });
 });
