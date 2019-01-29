@@ -1,14 +1,14 @@
 require('dotenv').config();
 require('../lib/utils/connect')();
 const request = require('supertest');
-const Studio = require('../lib/models/Actor');
+const Actor = require('../lib/models/Actor');
 const mongoose = require('mongoose');
 const app = require('../lib/app');
 
 describe('Actors', () => {
   const createActor = (name, dob, pob) => {
     return request(app)
-      .post('/studios')
+      .post('/actors')
       .send({
         name: name,
         dob: dob,
@@ -32,12 +32,12 @@ describe('Actors', () => {
     });
   });
 
-  it.only('Creates a new Actor', () => {
+  it('Creates a new Actor', () => {
     return createActor('John Wick')
       .then(createdUser => {
         return request(app)
           .post('/actors')
-          .send(createdUser)
+          .send(createdUser);
       })
       .then(res => {
         expect(res.body).toEqual({
@@ -47,41 +47,18 @@ describe('Actors', () => {
 
         });
       });
-    // return request(app)
-    //   .post('/actors')
-    //   .send({
-    //     name: 'John W',
-    //     address: {
-    //       city: 'Los Angeles',
-    //       state: 'CA',
-    //       county: 'LA County'
-    //     } 
-    //   })
-    //   .then(res => {
-    //     console.log(res.body);
-    //     expect(res.body).toEqual({
-    //       name: 'Universal',
-    //       address: {
-    //         city: 'Los Angeles',
-    //         state: 'CA',
-    //         county: 'LA County'
-    //       }, _id: expect.any(String),
-    //       __v: 0
-    //     });
-    //   });
   });
 
-  it('gets list of studios', () => {
-    return Promise.all(['Universal', 'Fox', 'Disney'].map(studio => {
-      return createStudio(studio);
-    }))
-      .then(() => {
+  it.only('gets list of actors', () => {
+    return Promise.all(['john Wick', 'Keanu Reeves', 'Denzel'].map(createActor))
+      .then(createdTweets => {
         return request(app)
-          .get('/studios');
+          .get('/actors/');
       })
-      .then(res => {
+      .then(res=> {
         expect(res.body).toHaveLength(3);
       });
+
   });
   it('gets studio by id', () => {
     return createStudio('New Studio')
