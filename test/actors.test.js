@@ -51,7 +51,7 @@ describe('Actors', () => {
 
   it('gets list of actors', () => {
     return Promise.all(['john Wick', 'Keanu Reeves', 'Denzel'].map(createActor))
-      .then(createdTweets => {
+      .then(createdActor => {
         return request(app)
           .get('/actors/');
       })
@@ -60,7 +60,7 @@ describe('Actors', () => {
       });
 
   });
-  it.only('gets Actor by id', () => {
+  it('gets Actor by id', () => {
     return createActor('Brad Pitt')
       .then(createdActor => {
         return Promise.all([
@@ -77,18 +77,18 @@ describe('Actors', () => {
           });
       });
   });
-  it('finds by Id and patches', ()=> {
-    return createStudio('univershal')
-      .then(mispelledStudio => {
+  it.only('finds Actor by id And patches', ()=> {
+    return createActor('Angelina Holy')
+      .then(wrongName => {
         return Promise.all([
-          Promise.resolve(createStudio.id),
+          Promise.resolve(wrongName.id),
           request(app)
-            .patch(`/studios/${mispelledStudio._id}`)
-            .send({ name: 'Universal' })
+            .patch(`/actors/${wrongName._id}`)
+            .send({ name: 'Angelina Jolie' })
         ])
           .then(([_id, res])=> {
             expect(res.body).toEqual({
-              name: 'Universal',
+              name: 'Angelina Jolie',
               _id: expect.any(String),
               __v: 0
             });
