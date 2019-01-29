@@ -22,7 +22,7 @@ describe('Actors', () => {
       done();
     });
   });
-  it.only('validates a good model', () => {
+  it('validates a good model', () => {
     const Actor = new Studio({
       name: 'John Wick'
     });
@@ -32,29 +32,43 @@ describe('Actors', () => {
     });
   });
 
-  it('creates a new studio', () => {
-    return request(app)
-      .post('/studios')
-      .send({
-        name: 'Universal',
-        address: {
-          city: 'Los Angeles',
-          state: 'CA',
-          county: 'LA County'
-        } 
+  it.only('Creates a new Actor', () => {
+    return createActor('John Wick')
+      .then(createdUser => {
+        return request(app)
+          .post('/actors')
+          .send(createdUser)
       })
       .then(res => {
-        console.log(res.body);
         expect(res.body).toEqual({
-          name: 'Universal',
-          address: {
-            city: 'Los Angeles',
-            state: 'CA',
-            county: 'LA County'
-          }, _id: expect.any(String),
+          name: 'John Wick',
+          _id: expect.any(String),
           __v: 0
+
         });
       });
+    // return request(app)
+    //   .post('/actors')
+    //   .send({
+    //     name: 'John W',
+    //     address: {
+    //       city: 'Los Angeles',
+    //       state: 'CA',
+    //       county: 'LA County'
+    //     } 
+    //   })
+    //   .then(res => {
+    //     console.log(res.body);
+    //     expect(res.body).toEqual({
+    //       name: 'Universal',
+    //       address: {
+    //         city: 'Los Angeles',
+    //         state: 'CA',
+    //         county: 'LA County'
+    //       }, _id: expect.any(String),
+    //       __v: 0
+    //     });
+    //   });
   });
 
   it('gets list of studios', () => {
