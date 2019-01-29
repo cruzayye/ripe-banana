@@ -119,7 +119,7 @@ describe('Studio app', () => {
       });
   });
 
-  it.only('finds by ID and deletes', ()=> {
+  it('finds by ID and deletes', ()=> {
     return createStudio('Disney Studio')
       .then(studio2Delete => {
         return request(app)

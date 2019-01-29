@@ -23,10 +23,10 @@ describe('Actors', () => {
     });
   });
   it('validates a good model', () => {
-    const Actor = new Studio({
+    const actor = new Actor({
       name: 'John Wick'
     });
-    expect(Actor.toJSON()).toEqual({
+    expect(actor.toJSON()).toEqual({
       name: 'John Wick',
       _id: expect.any(mongoose.Types.ObjectId) 
     });
@@ -77,7 +77,7 @@ describe('Actors', () => {
           });
       });
   });
-  it.only('finds Actor by id And patches', ()=> {
+  it('finds Actor by id And patches', ()=> {
     return createActor('Angelina Holy')
       .then(wrongName => {
         return Promise.all([
@@ -97,10 +97,10 @@ describe('Actors', () => {
   });
 
   it('finds by ID and deletes', ()=> {
-    return createStudio('Disney Studio')
-      .then(studio2Delete => {
+    return createActor('Tony Montana')
+      .then(deleteActor => {
         return request(app)
-          .delete(`/studios/${studio2Delete._id}`)
+          .delete(`/actors/${deleteActor._id}`)
           .send({ deleted: 1 });
       })
       .then(res => {
