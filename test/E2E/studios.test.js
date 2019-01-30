@@ -1,12 +1,12 @@
 require('dotenv').config();
-require('../lib/utils/connect')();
+require('../../lib/utils/connect')();
 
 const request = require('supertest');
-const Studio = require('../lib/models/Studio');
+// const Studio = require('../../lib/models/Studio');
 const mongoose = require('mongoose');
-const app = require('../lib/app');
+const app = require('../../lib/app');
 
-describe('Studio app', () => {
+describe('studios tests', () => {
 
   const createStudio = (name, address) => {
     return request(app)
@@ -24,28 +24,6 @@ describe('Studio app', () => {
     });
   });
   
-  it('validates a good model', () => {
-    const studio = new Studio({
-      name: 'Universal',
-      address: {
-        city: 'Los Angeles',
-        state: 'CA',
-        country: 'USA'
-      }
-    });
-    expect(studio.toJSON()).toEqual({
-      
-      name: 'Universal',
-      address: {
-        city: 'Los Angeles',
-        state: 'CA',
-        country: 'USA'
-      },
-      _id: expect.any(mongoose.Types.ObjectId)
-     
-    });
-  });
-
   it('creates a new studio', () => {
     return request(app)
       .post('/studios')
