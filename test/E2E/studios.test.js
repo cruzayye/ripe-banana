@@ -1,12 +1,12 @@
 require('dotenv').config();
-require('../lib/utils/connect')();
+require('../../lib/utils/connect')();
 
 const request = require('supertest');
-const Studio = require('../lib/models/Studio');
+// const Studio = require('../../lib/models/Studio');
 const mongoose = require('mongoose');
-const app = require('../lib/app');
+const app = require('../../lib/app');
 
-describe('Studio app', () => {
+describe('studios tests', () => {
 
   const createStudio = (name, address) => {
     return request(app)
@@ -24,28 +24,6 @@ describe('Studio app', () => {
     });
   });
   
-  it('validates a good model', () => {
-    const studio = new Studio({
-      name: 'Universal',
-      address: {
-        city: 'Los Angeles',
-        state: 'CA',
-        county: 'LA County'
-      }
-    });
-    expect(studio.toJSON()).toEqual({
-      
-      name: 'Universal',
-      address: {
-        city: 'Los Angeles',
-        state: 'CA',
-        county: 'LA County'
-      },
-      _id: expect.any(mongoose.Types.ObjectId)
-     
-    });
-  });
-
   it('creates a new studio', () => {
     return request(app)
       .post('/studios')
@@ -54,17 +32,16 @@ describe('Studio app', () => {
         address: {
           city: 'Los Angeles',
           state: 'CA',
-          county: 'LA County'
+          country: 'USA'
         } 
       })
       .then(res => {
-        console.log(res.body);
         expect(res.body).toEqual({
           name: 'Universal',
           address: {
             city: 'Los Angeles',
             state: 'CA',
-            county: 'LA County'
+            country: 'USA'
           }, _id: expect.any(String),
           __v: 0
         });
@@ -83,7 +60,7 @@ describe('Studio app', () => {
         expect(res.body).toHaveLength(3);
       });
   });
-  it.only('gets studio by id', () => {
+  it('gets studio by id', () => {
     return createStudio('New Studio')
       .then(createStudio => {
         return Promise.all([
@@ -91,6 +68,7 @@ describe('Studio app', () => {
           request(app)
             .get(`/studios/${createStudio._id}`)
         ])
+        // eslint-disable-next-line no-unused-vars
           .then(([_id, res]) => {
             expect(res.body).toEqual({
               name: 'New Studio',
@@ -109,6 +87,7 @@ describe('Studio app', () => {
             .patch(`/studios/${mispelledStudio._id}`)
             .send({ name: 'Universal' })
         ])
+        // eslint-disable-next-line no-unused-vars
           .then(([_id, res])=> {
             expect(res.body).toEqual({
               name: 'Universal',
