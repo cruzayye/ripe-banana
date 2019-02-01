@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 require('dotenv').config();
 require('../lib/utils/connect')();
 const request = require('supertest');
@@ -22,6 +23,11 @@ describe('Actors', () => {
       done();
     });
   });
+
+  afterAll(done => {
+    mongoose.connection.close(done);
+  });
+
   it('validates a good model', () => {
     const actor = new Actor({
       name: 'John Wick'

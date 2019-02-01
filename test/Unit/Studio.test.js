@@ -11,6 +11,14 @@ describe('Studio Model test', () => {
       done();
     });
   });
+
+  afterAll((done) => {
+    mongoose.disconnect(done);
+  }); 
+
+  afterAll((done) => {
+    mongoose.disconnect(done);
+  }); 
   
   it('validates a good model', () => {
     const studio = new Studio({
