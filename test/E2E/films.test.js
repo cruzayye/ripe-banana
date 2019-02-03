@@ -34,20 +34,6 @@ describe('Film routes tests', () => {
       });
   };
 
-  // const createFilm = (title, studio, released, cast) => {
-  //   return request(app)
-  //     .post('/films')
-  //     .send({
-  //       title: expect.any(String),
-  //       studio: expect.any(String),
-  //       released: expect.any(Number),
-  //       cast: {
-  //         role: expect.any(String),
-  //         actor: expect.any(String)
-  //       }
-  //     })
-  //     .then(res => res.body);
-  // };
 
   beforeEach(done => {
     mongoose.connection.dropDatabase(done);
@@ -131,7 +117,18 @@ describe('Film routes tests', () => {
             });
           });
       });
-     
+  });
+
+  it('gets a film by id and deletes it', () => {
+    return createFilm('Star Wars')
+      .then(film2Delete => {
+        return request(app)
+          .delete(`/films/${film2Delete._id}`)
+          .send({ deleted: 1 });
+      })
+      .then(res => {
+        expect(res.body).toEqual({ deleted: 1 });
+      });
   });
 });
 
