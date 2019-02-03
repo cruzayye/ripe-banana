@@ -9,6 +9,46 @@ const app = require('../../lib/app');
 
 describe('Film routes tests', () => {
 
+  const createStudio = (name = 'Universal', 
+    address = { city: 'Los Angeles',
+      state: 'CA',
+      country: 'USA'  }) => {
+    return request(app)
+      .post('/studios')
+      .send({
+        name: name,
+        address: address
+      })
+      .then(res => res.body);
+  };
+
+  const createFilm = (title = 'The Matrix', released = 1994) => {
+    return createStudio()
+      .then(createdStudio => {
+        return request(app)
+          .post('/films')
+          .send({
+            title, released, studio: createdStudio._id
+          })
+          .then(res => res.body);
+      });
+  };
+
+  // const createFilm = (title, studio, released, cast) => {
+  //   return request(app)
+  //     .post('/films')
+  //     .send({
+  //       title: expect.any(String),
+  //       studio: expect.any(String),
+  //       released: expect.any(Number),
+  //       cast: {
+  //         role: expect.any(String),
+  //         actor: expect.any(String)
+  //       }
+  //     })
+  //     .then(res => res.body);
+  // };
+
   beforeEach(done => {
     mongoose.connection.dropDatabase(done);
   });
@@ -55,7 +95,20 @@ describe('Film routes tests', () => {
                 });
               });
           });
+      });
+  });
 
+  it('gets a list of films', () => {
+    return Promise.all(['The Matrix', 'Lion King', 'Star Wars'].map(film => {
+      return createFilm(film);
+    }))
+      .then(() => {
+        return request(app)
+          .get('/films');
+      })
+      .then(res => {
+        console.log('Film res.body: ', res.body);
+        expect(res.body).toHaveLength(3);
       });
   });
 });
