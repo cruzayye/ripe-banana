@@ -119,6 +119,19 @@ describe('Film routes tests', () => {
       });
   });
 
+  it('gets film by id and updates it', () => {
+    return createFilm('Lion King')
+      .then(updatedFilm => {
+        updatedFilm.title = 'The Incredibles';
+        return request(app)
+          .put(`/films/${updatedFilm._id}`)
+          .send(updatedFilm);
+      })
+      .then(res => {
+        expect(res.text).toContain('The Incredibles');
+      });
+  });
+
   it('gets a film by id and deletes it', () => {
     return createFilm('Star Wars')
       .then(film2Delete => {
