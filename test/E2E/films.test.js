@@ -113,7 +113,7 @@ describe('Film routes tests', () => {
   });
 
   it('gets a film by id', () => {
-    return createFilm('Star Wars')
+    return createFilm('The Matrix')
       .then(createFilm => {
         return Promise.all([
           Promise.resolve(createFilm.id),
@@ -122,17 +122,16 @@ describe('Film routes tests', () => {
         ])
           .then(([_id, res]) => {
             expect(res.body).toEqual({
-              title: 'Star Wars',
-              released: 1977,
+              title: 'The Matrix',
+              released: 1994,
               cast: [],
-              studio: {
-                _id: expect.any(String),
-                name: '20th Century Fox'
-              },
-              _id
+              studio: expect.any(String),
+              __v: 0,
+              _id: expect.any(String)
             });
           });
       });
+     
   });
 });
 
