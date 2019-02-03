@@ -47,14 +47,12 @@ describe('Film routes tests', () => {
         state: 'CA',
         country: 'USA' } })
       .then(studio => {
-        console.log('Studio: ', studio);
         return Actor.create({
           name: 'Keanu Reeves',
           dob: '1970-01-01',
           pob: 'Beverly Hills'
         })
           .then(actor => {
-            console.log('Actor: ', actor);
             return request(app)
               .post('/films')
               .send({
@@ -67,7 +65,6 @@ describe('Film routes tests', () => {
                 }]
               })
               .then(res => {
-                console.log('Res body: ', res.body);
                 expect(res.body).toEqual({ __v: 0,
                   _id: expect.any(String),
                   title: 'The Matrix',
@@ -93,7 +90,6 @@ describe('Film routes tests', () => {
           .get('/films');
       })
       .then(res => {
-        console.log('Film res.body: ', res.body);
         expect(res.body).toHaveLength(3);
       });
   });
@@ -106,6 +102,7 @@ describe('Film routes tests', () => {
           request(app)
             .get(`/films/${createFilm._id}`)
         ])
+        /* eslint-disable-next-line*/
           .then(([_id, res]) => {
             expect(res.body).toEqual({
               title: 'The Matrix',
