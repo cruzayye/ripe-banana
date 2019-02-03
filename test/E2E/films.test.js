@@ -111,4 +111,29 @@ describe('Film routes tests', () => {
         expect(res.body).toHaveLength(3);
       });
   });
+
+  it('gets a film by id', () => {
+    return createFilm('Star Wars')
+      .then(createFilm => {
+        return Promise.all([
+          Promise.resolve(createFilm.id),
+          request(app)
+            .get(`/films/${createFilm._id}`)
+        ])
+          .then(([_id, res]) => {
+            expect(res.body).toEqual({
+              title: 'Star Wars',
+              released: 1977,
+              cast: [],
+              studio: {
+                _id: expect.any(String),
+                name: '20th Century Fox'
+              },
+              _id
+            });
+          });
+      });
+  });
 });
+
+
