@@ -22,6 +22,10 @@ describe('studios tests', () => {
       done();
     });
   });
+
+  afterAll((done) => {
+    mongoose.disconnect(done);
+  }); 
   
   it('creates a new studio', () => {
     return request(app)

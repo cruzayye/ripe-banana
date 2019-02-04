@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 require('dotenv').config();
 require('../../lib/utils/connect')();
 
@@ -22,6 +23,10 @@ describe('Actor routes tests', () => {
     return mongoose.connection.dropDatabase(() => {
       done();
     });
+  });
+
+  afterAll(done => {
+    mongoose.connection.close(done);
   });
   
   it('creates a new actor', () => {
