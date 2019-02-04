@@ -77,6 +77,7 @@ describe('studios tests', () => {
           });
       });
   });
+  
   it('gets a studio by id and patches it', ()=> {
     return createStudio('univershal')
       .then(mispelledStudio => {
