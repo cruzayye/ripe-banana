@@ -39,6 +39,11 @@ describe('Film routes tests', () => {
     mongoose.connection.dropDatabase(done);
   });
 
+  afterAll(done => {
+    mongoose.connection.close(done);
+  });
+
+
   it('creates a film', () => {
     return Studio.create({
       name: 'Universal',
