@@ -2,7 +2,6 @@ require('dotenv').config();
 require('../../lib/utils/connect')();
 
 const request = require('supertest');
-// const Studio = require('../../lib/models/Studio');
 const mongoose = require('mongoose');
 const app = require('../../lib/app');
 
@@ -82,7 +81,8 @@ describe('studios tests', () => {
           });
       });
   });
-  it('finds by Id and patches', ()=> {
+  
+  it('gets a studio by id and patches it', ()=> {
     return createStudio('univershal')
       .then(mispelledStudio => {
         return Promise.all([
@@ -102,7 +102,7 @@ describe('studios tests', () => {
       });
   });
 
-  it('finds by ID and deletes', ()=> {
+  it('gets a studio by id and deletes it', ()=> {
     return createStudio('Disney Studio')
       .then(studio2Delete => {
         return request(app)

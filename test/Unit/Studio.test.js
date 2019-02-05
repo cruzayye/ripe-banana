@@ -41,4 +41,8 @@ describe('Studio Model test', () => {
      
     });
   });
+
+  afterAll((done) => {
+    mongoose.disconnect(done);
+  }); 
 });

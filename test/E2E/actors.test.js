@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 require('dotenv').config();
-require('../lib/utils/connect')();
-const request = require('supertest');
-const Actor = require('../lib/models/Actor');
-const mongoose = require('mongoose');
-const app = require('../lib/app');
+require('../../lib/utils/connect')();
 
-describe('Actors', () => {
+const request = require('supertest');
+const mongoose = require('mongoose');
+const app = require('../../lib/app');
+
+describe('Actor routes tests', () => {
+
   const createActor = (name, dob, pob) => {
     return request(app)
       .post('/actors')
@@ -27,18 +28,8 @@ describe('Actors', () => {
   afterAll(done => {
     mongoose.connection.close(done);
   });
-
-  it('validates a good model', () => {
-    const actor = new Actor({
-      name: 'John Wick'
-    });
-    expect(actor.toJSON()).toEqual({
-      name: 'John Wick',
-      _id: expect.any(mongoose.Types.ObjectId) 
-    });
-  });
-
-  it('Creates a new Actor', () => {
+  
+  it('creates a new actor', () => {
     return createActor('John Wick')
       .then(createdUser => {
         return request(app)
@@ -56,8 +47,10 @@ describe('Actors', () => {
   });
 
   it('gets list of actors', () => {
-    return Promise.all(['john Wick', 'Keanu Reeves', 'Denzel'].map(createActor))
-      .then(createdActor => {
+    return Promise.all(['John Wick', 'Keanu Reeves', 'Denzel'].map(actor => {
+      return createActor(actor);
+    }))
+      .then(() => {
         return request(app)
           .get('/actors/');
       })
@@ -66,7 +59,7 @@ describe('Actors', () => {
       });
 
   });
-  it('gets Actor by id', () => {
+  it('gets an actor by id', () => {
     return createActor('Brad Pitt')
       .then(createdActor => {
         return Promise.all([
@@ -74,6 +67,7 @@ describe('Actors', () => {
           request(app)
             .get(`/actors/${createdActor._id}`)
         ])
+        /* eslint-disable-next-line*/
           .then(([_id, res]) => {
             expect(res.body).toEqual({
               name: 'Brad Pitt',
@@ -83,7 +77,7 @@ describe('Actors', () => {
           });
       });
   });
-  it('finds Actor by id And patches', ()=> {
+  it('gets an actor by id and patches it', ()=> {
     return createActor('Angelina Holy')
       .then(wrongName => {
         return Promise.all([
@@ -92,6 +86,7 @@ describe('Actors', () => {
             .patch(`/actors/${wrongName._id}`)
             .send({ name: 'Angelina Jolie' })
         ])
+        /* eslint-disable-next-line*/
           .then(([_id, res])=> {
             expect(res.body).toEqual({
               name: 'Angelina Jolie',
@@ -102,7 +97,7 @@ describe('Actors', () => {
       });
   });
 
-  it('finds by ID and deletes', ()=> {
+  it('get and actor by id and deletes it', ()=> {
     return createActor('Tony Montana')
       .then(deleteActor => {
         return request(app)
